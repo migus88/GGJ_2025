@@ -4,11 +4,11 @@ using UnityEngine.Events;
 
 namespace Managers
 {
-    public class SecondTimer
+    public class TimeService
     {
         public UnityEvent OnSecondPassed;
-
-        private long _secondsPassed;
+        public long SecondsPassed;
+        
         private bool _isActive;
         private UniTask _timer;
         private bool _timerRunning = true;
@@ -43,6 +43,7 @@ namespace Managers
                     while (_timerRunning)
                     {
                         await UniTask.Delay(TimeSpan.FromSeconds(1));
+                        SecondsPassed++;
                         OnSecondPassed?.Invoke();
                     }
                 }
