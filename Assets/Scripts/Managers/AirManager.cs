@@ -36,15 +36,15 @@ namespace Managers
 
         private void HandleDeflation()
         {
-            if (CurrentAir <= 0f)
+            if (CurrentAir > 0f)
             {
-                CurrentAir = 0f;
-                _isDeflating = false;
-                AirDepleted?.Invoke();
-                return;
+                CurrentAir -= _reductionSpeed;
             }
 
-            CurrentAir -= _reductionSpeed;
+            if (Math.Max(0, CurrentAir) != 0) return;
+            
+            _isDeflating = false;
+            AirDepleted?.Invoke();
         }
     }
 }

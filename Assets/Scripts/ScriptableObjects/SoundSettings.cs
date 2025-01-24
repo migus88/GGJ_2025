@@ -12,12 +12,36 @@ namespace ScriptableObjects
         [Inject] 
         public AudioSource AudioSource;
         
-        [InspectorName("Sounds")]
-        [field:SerializeField] public AudioClip LobbyMusic;
-        [field:SerializeField] public AudioClip GameplayMusic;
-        [field:SerializeField] public AudioClip[] AccelerationSounds;
-        [field:SerializeField] public AudioClip[] CollisionSounds;
-        [field:SerializeField] public AudioClip[] DeflationSounds;
-        [field: SerializeField] public AudioClip[] InflationSounds;
+        [field: InspectorName("Sounds")]
+        [field:SerializeField] public AudioClip LobbyMusic
+        {
+            get;
+            set;
+        }
+        [field:SerializeField] public AudioClip GameplayMusic  
+        {
+            get;
+            set;
+        }
+        [field:SerializeField] public AudioClip[] AccelerationSounds
+        {
+            get;
+            set;
+        }
+        [field:SerializeField] public AudioClip[] CollisionSounds
+        {
+            get;
+            set;
+        }
+        [field:SerializeField] public AudioClip[] DeflationSounds
+        {
+            get;
+            set;
+        }
+        [field: SerializeField] public AudioClip[] InflationSounds
+        {
+            get;
+            set;
+        }
     }
 }
