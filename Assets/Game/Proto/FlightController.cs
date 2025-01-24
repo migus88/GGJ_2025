@@ -7,13 +7,15 @@ namespace Game.Proto
 {
     public class FlightController : MonoBehaviour
     {
+        public float Inflation { get; set; } = 0f;
+        
         [SerializeField] private Rigidbody2D _rigidbody;
         [SerializeField] private float _rotationSpeed = 200f;
         [SerializeField] private float _acceleration = 5f;
         [SerializeField] private Transform _pivotPoint;
         [SerializeField] private SkeletonAnimation _skeletonAnimation;
-
-        private float _inflation = 0f;
+        [SerializeField] private PhysicsMaterial2D _movementPhysicsMaterial;
+        [SerializeField] private PhysicsMaterial2D _flyingPhysicsMaterial;
 
         private void Awake()
         {
@@ -22,24 +24,26 @@ namespace Game.Proto
 
         public void StartFlying()
         {
-            _inflation = 1f;
+            Inflation = 1f;
+            _rigidbody.sharedMaterial = _flyingPhysicsMaterial;
         }
 
         public void StopFlying()
         {
-            _inflation = 0f;
+            Inflation = 0f;
+            _rigidbody.sharedMaterial = _movementPhysicsMaterial;
         }
 
-        public async UniTaskVoid PlayAnimationAsync()
+        private async UniTaskVoid PlayAnimationAsync()
         {
             _skeletonAnimation.AnimationState.SetAnimation(1, "Inflate", false);
-            await UniTask.DelayFrame(1);
+            await UniTask.DelayFrame(1, cancellationToken: destroyCancellationToken);
             var animationTime = _skeletonAnimation.AnimationState.GetCurrent(1).Animation.Duration;
         
             while (!destroyCancellationToken.IsCancellationRequested)
             {
-                await UniTask.DelayFrame(1);
-                _skeletonAnimation.AnimationState.GetCurrent(1).TrackTime = _inflation * animationTime;
+                await UniTask.DelayFrame(1, cancellationToken: destroyCancellationToken);
+                _skeletonAnimation.AnimationState.GetCurrent(1).TrackTime = Inflation * animationTime;
             }
         }
 
