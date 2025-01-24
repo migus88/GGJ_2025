@@ -7,6 +7,7 @@ namespace Managers
         public float DistanceToExit { get; private set; }
         private MazeExitObject _mazeExit;
         private GameObject _player;
+        
         public DistanceManager(MazeExitObject mazeExit, GameObject player,TimeService _timeService)
         {
             _mazeExit = mazeExit;

@@ -20,6 +20,7 @@ public class UIManager : MonoBehaviour, IUIManager
         _distanceManager = distanceManager;
         _airManager = airManager;
         _timeService = timeService;
+
         
         _timeService.SecondPassed += HandleSecondPassed;
     }
