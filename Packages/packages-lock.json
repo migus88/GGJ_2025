@@ -16,6 +16,35 @@
       "dependencies": {},
       "url": "https://package.openupm.com"
     },
+    "com.esotericsoftware.spine.spine-csharp": {
+      "version": "https://github.com/EsotericSoftware/spine-runtimes.git?path=spine-csharp/src#4.2",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "744cefeddcc3810cdef7e85756d6b7ce3a1d3d05"
+    },
+    "com.esotericsoftware.spine.spine-unity": {
+      "version": "https://github.com/EsotericSoftware/spine-runtimes.git?path=spine-unity/Assets/Spine#4.2",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.ugui": "1.0.0",
+        "com.unity.modules.animation": "1.0.0",
+        "com.unity.modules.physics": "1.0.0",
+        "com.unity.modules.physics2d": "1.0.0",
+        "com.esotericsoftware.spine.spine-csharp": "4.2.0"
+      },
+      "hash": "744cefeddcc3810cdef7e85756d6b7ce3a1d3d05"
+    },
+    "com.esotericsoftware.spine.urp-shaders": {
+      "version": "https://github.com/EsotericSoftware/spine-runtimes.git?path=spine-unity/Modules/com.esotericsoftware.spine.urp-shaders#4.2",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.render-pipelines.universal": "7.1.5"
+      },
+      "hash": "744cefeddcc3810cdef7e85756d6b7ce3a1d3d05"
+    },
     "com.sandland.scene-tools": {
       "version": "0.12.1",
       "depth": 0,
