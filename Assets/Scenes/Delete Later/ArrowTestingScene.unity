@@ -838,6 +838,7 @@ GameObject:
   - component: {fileID: 1649535713}
   - component: {fileID: 1649535712}
   - component: {fileID: 1649535711}
+  - component: {fileID: 1649535714}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -890,6 +891,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1649535714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1649535710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e30560af35f98e4da416210159cfe09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Target: {fileID: 121881906}
+  ArrowUI: {fileID: 1919432252}
+  MainCamera: {fileID: 847609014}
 --- !u!1 &1814607461
 GameObject:
   m_ObjectHideFlags: 0
@@ -1099,9 +1115,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e30560af35f98e4da416210159cfe09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Target: {fileID: 0}
-  ArrowUI: {fileID: 0}
-  MainCamera: {fileID: 0}
+  Target: {fileID: 121881906}
+  ArrowUI: {fileID: 1919432252}
+  MainCamera: {fileID: 847609014}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
