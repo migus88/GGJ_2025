@@ -7,6 +7,7 @@
     "com.esotericsoftware.spine.urp-shaders": "https://github.com/EsotericSoftware/spine-runtimes.git?path=spine-unity/Modules/com.esotericsoftware.spine.urp-shaders#4.2",
     "com.sandland.scene-tools": "0.12.1",
     "com.unity.2d.sprite": "1.0.0",
+    "com.unity.2d.spriteshape": "10.0.7",
     "com.unity.addressables": "2.2.2",
     "com.unity.ide.rider": "3.0.34",
     "com.unity.multiplayer.center": "1.0.0",
