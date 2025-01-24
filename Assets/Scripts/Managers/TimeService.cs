@@ -4,11 +4,10 @@ using UnityEngine.Events;
 
 namespace Managers
 {
-    public class TimeService
+    public class TimeService : ITimeService
     {
-        public UnityEvent OnSecondPassed;
-        public long SecondsPassed;
-        
+        public UnityEvent OnSecondPassed { get; }
+        public long SecondsPassed { get; private set; }
         private bool _isActive;
         private UniTask _timer;
         private bool _timerRunning = true;

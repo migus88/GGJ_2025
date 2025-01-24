@@ -1,9 +1,9 @@
 namespace Managers
 {
-    public class AirManager
+    public class AirManager : IAirManager
     {
-        public float CurrentAir = 1f;
-
+        public float CurrentAir { get; private set; }
+        
         public void AddAir()
         {
         

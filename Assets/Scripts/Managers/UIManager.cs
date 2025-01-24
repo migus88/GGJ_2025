@@ -3,7 +3,7 @@ using Managers;
 using TMPro;
 using UnityEngine;
 
-public class UIManager : MonoBehaviour
+public class UIManager : MonoBehaviour, IUIManager
 {
     [SerializeField] private TextMeshProUGUI _distanceTXT;
     [SerializeField] private TextMeshProUGUI _airAmountTXT;

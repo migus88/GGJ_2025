@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Managers
 {
-    public class SoundManager
+    public class SoundManager : ISoundManager
     {
         private SoundSettings _settings;
         private AudioSource _mainAudioSource;

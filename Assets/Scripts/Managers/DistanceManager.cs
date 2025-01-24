@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Managers
 {
-    public class DistanceManager
+    public class DistanceManager : IDistanceManager
     {
         public float DistanceToExit;
         private MazeExitObject _mazeExit;
