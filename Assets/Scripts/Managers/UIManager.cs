@@ -20,15 +20,22 @@ public class UIManager : MonoBehaviour, IUIManager
         _distanceManager = distanceManager;
         _airManager = airManager;
         _timeService = timeService;
+        
+        _timeService.SecondPassed += HandleSecondPassed;
     }
     public void OnEnable()
     {
-        //Sign up to events;
+        
+    }
+
+    private void HandleSecondPassed()
+    {
+        SetDistance();
     }
 
     private void SetDistance()
     {
-        _distanceTXT.text = $"{_distanceManager.DistanceToExit}m";
+        _distanceTXT.text = $"{_distanceManager.DistanceToExit:F1}m";
     }
 
     private void SetAir()

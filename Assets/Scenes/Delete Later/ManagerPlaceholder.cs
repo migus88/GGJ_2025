@@ -17,11 +17,13 @@ public class ManagerPlaceholder : MonoBehaviour
 
     void Start()
     {
-        _distanceManager = new DistanceManager(_mazeExitObject, _player);
-        _airManager = new AirManager();
+        
         _timeService = new TimeService();
+        _timeService.StartTimer();
+        _distanceManager = new DistanceManager(_mazeExitObject, _player,_timeService);
+        _airManager = new AirManager(_timeService);
         _uiManager = gameObject.GetComponent<UIManager>();
-        _uiManager.SetStuff(_distanceManager,_airManager,_timeService);
+        _uiManager.Construct(_distanceManager,_airManager,_timeService);
     }
 
     // Update is called once per frame
