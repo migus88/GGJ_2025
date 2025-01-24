@@ -12,12 +12,12 @@ public class UIManager : MonoBehaviour, IUIManager
     private TimeService _timeService;
     private DistanceManager _distanceManager;
     private AirManager _airManager;
-
-    public UIManager(DistanceManager distanceManager, AirManager airManager, TimeService timeService)
+    
+    public void Construct(DistanceManager distanceManager, AirManager airManager, TimeService timeService)
     {
-        _timeService = timeService;
         _distanceManager = distanceManager;
         _airManager = airManager;
+        _timeService = timeService;
     }
     public void OnEnable()
     {

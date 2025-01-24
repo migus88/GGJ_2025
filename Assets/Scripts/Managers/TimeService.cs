@@ -6,7 +6,7 @@ namespace Managers
 {
     public class TimeService : ITimeService
     {
-        public UnityEvent OnSecondPassed { get; }
+        public event Action SecondPassed;
         public long SecondsPassed { get; private set; }
         private bool _isActive;
         private UniTask _timer;
@@ -15,6 +15,8 @@ namespace Managers
         public void StartTimer()
         {
             _isActive = true;
+            _timerRunning = true;
+            SecondsPassed = 0;
             SecondTicker();
         }
 
@@ -26,27 +28,22 @@ namespace Managers
         public void StopTimer()
         {
             _isActive = false;
-            _timer = new UniTask();
+            _timerRunning = false;
         }
 
         public void RestartTimer()
         {
-            _timer = new UniTask();
             StartTimer();
         }
 
-        private void SecondTicker()
+        public async UniTaskVoid SecondTicker()
         {
-            _timer = UniTask.Run(async () =>
-                {
-                    while (_timerRunning)
-                    {
-                        await UniTask.Delay(TimeSpan.FromSeconds(1));
-                        SecondsPassed++;
-                        OnSecondPassed?.Invoke();
-                    }
-                }
-            );
+            while (_timerRunning)
+            {
+                await UniTask.Delay(TimeSpan.FromSeconds(1));
+                SecondsPassed++;
+                SecondPassed?.Invoke();
+            }
         }
     }
 }

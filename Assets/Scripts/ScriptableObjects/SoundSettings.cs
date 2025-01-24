@@ -1,4 +1,5 @@
 using UnityEngine;
+using VContainer;
 
 namespace ScriptableObjects
 {
@@ -6,13 +7,17 @@ namespace ScriptableObjects
     public class SoundSettings : ScriptableObject
     {
         [Range(0f, 2f)] 
-        public float Pitch;
+        [field:SerializeField] public float Pitch;
+
+        [Inject] 
+        public AudioSource AudioSource;
         
         [InspectorName("Sounds")]
-        public AudioClip LobbyMusic;
-        public AudioClip GameplayMusic;
-        public AudioClip[] AccelerationSounds;
-        public AudioClip[] CollisionSounds;
-        public AudioClip[] DeflationSounds;
+        [field:SerializeField] public AudioClip LobbyMusic;
+        [field:SerializeField] public AudioClip GameplayMusic;
+        [field:SerializeField] public AudioClip[] AccelerationSounds;
+        [field:SerializeField] public AudioClip[] CollisionSounds;
+        [field:SerializeField] public AudioClip[] DeflationSounds;
+        [field: SerializeField] public AudioClip[] InflationSounds;
     }
 }

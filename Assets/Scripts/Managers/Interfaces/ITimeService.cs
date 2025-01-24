@@ -6,7 +6,7 @@ namespace Managers
 {
     public interface ITimeService
     {
-        UnityEvent OnSecondPassed { get; }
+        event Action SecondPassed;
         long SecondsPassed { get; }
 
         void StartTimer(); // Starts the timer

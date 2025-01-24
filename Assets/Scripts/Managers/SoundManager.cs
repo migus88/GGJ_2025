@@ -15,7 +15,8 @@ namespace Managers
             Gameplay,
             Accelaration,
             Collision,
-            Deflation
+            Deflation,
+            Inflation
         }
         public SoundManager(SoundSettings settings)
         {
@@ -50,6 +51,11 @@ namespace Managers
                     source = _effectsAudioSource;
                     pitch = Random.Range(0f,2f);
                     sound = _settings.DeflationSounds[Random.Range(0, _settings.DeflationSounds.Length)];
+                    break;
+                case Type.Inflation:
+                    source = _effectsAudioSource;
+                    pitch = Random.Range(0f,2f);
+                    sound = _settings.InflationSounds[Random.Range(0, _settings.DeflationSounds.Length)];
                     break;
                 case Type.Lobby:
                 default:
