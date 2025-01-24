@@ -2,6 +2,7 @@ using System;
 using Managers;
 using TMPro;
 using UnityEngine;
+using VContainer;
 
 public class UIManager : MonoBehaviour, IUIManager
 {
@@ -12,28 +13,17 @@ public class UIManager : MonoBehaviour, IUIManager
     private TimeService _timeService;
     private DistanceManager _distanceManager;
     private AirManager _airManager;
-
-    public UIManager(DistanceManager distanceManager, AirManager airManager, TimeService timeService)
+    
+    [Inject]
+    public void Construct(DistanceManager distanceManager, AirManager airManager, TimeService timeService)
     {
-        _timeService = timeService;
         _distanceManager = distanceManager;
         _airManager = airManager;
-    }
-    public void SetStuff(DistanceManager distanceManager, AirManager airManager, TimeService timeService)
-    {
         _timeService = timeService;
-        _distanceManager = distanceManager;
-        _airManager = airManager;
     }
     public void OnEnable()
     {
         //Sign up to events;
-    }
-
-    public void Update()
-    {
-        _distanceManager.CalculateDistance();
-        SetDistance();
     }
 
     private void SetDistance()

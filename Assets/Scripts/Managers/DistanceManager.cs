@@ -4,7 +4,7 @@ namespace Managers
 {
     public class DistanceManager : IDistanceManager
     {
-        public float DistanceToExit;
+        public float DistanceToExit { get; private set; }
         private MazeExitObject _mazeExit;
         private GameObject _player;
         public DistanceManager(MazeExitObject mazeExit, GameObject player)
@@ -12,8 +12,8 @@ namespace Managers
             _mazeExit = mazeExit;
             _player = player;
         }
-        
-        public void CalculateDistance()
+
+        private void CalculateDistance()
         {
             DistanceToExit = Vector2.Distance(_mazeExit.CurrentPosition.position, _player.transform.position);
         }
