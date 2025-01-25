@@ -32,6 +32,8 @@ namespace Game.Code.Player
         {
             _gameSettings = gameSettings;
             _inputService = inputService;
+            
+            _rigidbody.linearDamping = _gameSettings.MovementDrag;
         }
 
         private void Update()
@@ -47,6 +49,13 @@ namespace Game.Code.Player
         {
             ControlFlight();
             Move();
+            
+            
+            // Clamp the velocity to the maximum speed
+            if (_rigidbody.linearVelocity.magnitude > _gameSettings.MaxSpeed)
+            {
+                _rigidbody.linearVelocity = _rigidbody.linearVelocity.normalized * _gameSettings.MaxSpeed;
+            }
         }
 
         private void Move()
@@ -59,7 +68,6 @@ namespace Game.Code.Player
             if (_inputService.ConsumeInflationPress())
             {
                 StartFlying();
-                _rigidbody.AddForce(Vector2.up * _gameSettings.FlyingSpeed);
                 return;
             }
             
@@ -71,12 +79,18 @@ namespace Game.Code.Player
 
             if (_inputService.ConsumeLeftPress())
             {
-                _animationController.PlayWalk(Vector2.left);
+                if(_state == PlayerState.Grounded)
+                {
+                    _animationController.PlayWalk(Vector2.left);
+                }
                 _rigidbody.AddForce(Vector2.left * _gameSettings.MovementSpeed);
             }
             else if (_inputService.ConsumeRightPress())
             {
-                _animationController.PlayWalk(Vector2.right);
+                if(_state == PlayerState.Grounded)
+                {
+                    _animationController.PlayWalk(Vector2.right);
+                }
                 _rigidbody.AddForce(Vector2.right * _gameSettings.MovementSpeed);
             }
             else if(_state == PlayerState.Grounded)
@@ -186,6 +200,12 @@ namespace Game.Code.Player
 
         private void HandleLanding()
         {
+            if (_state == PlayerState.Flying)
+            {
+                _fallingDistance = 0;
+                _previousHeight = _rigidbody.position.y;
+            }
+            
             if (_state != PlayerState.Grounded)
             {
                 return;

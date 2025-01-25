@@ -9,6 +9,7 @@ namespace ScriptableObjects
         float FlightDuration { get; }
         float FlightAirUsageRate { get; }
         float AirUsageRate { get; }
+        float MaxSpeed { get; }
         float MovementSpeed { get; }
         float JumpForce { get; }
         float FlyingSpeed { get; }
