@@ -107,12 +107,14 @@ namespace Game.Code.Player
             transform.position = _spawnPoint.position;
             _airManager.AddAir(1f);
             _fallingDistance = 0;
+            _rigidbody.rotation = 0;
             _previousHeight = _rigidbody.position.y;
             
             await _animationController.PlaySpawn();
+            await UniTask.Delay(TimeSpan.FromSeconds(1));
             
             _airManager.StartDeflation();
-            _state = PlayerState.Falling;
+            _state = PlayerState.Spawning;
         }
 
         private void Move()

@@ -5,6 +5,7 @@ namespace Game.Code.Player
         Grounded,
         Falling,
         Flying,
-        Dead
+        Dead,
+        Spawning
     }
 }
