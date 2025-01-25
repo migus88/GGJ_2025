@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <MinPitch>k__BackingField: 0.95
   <MaxPitch>k__BackingField: 1.05
-  <MusicVol>k__BackingField: 1
-  <SFXVol>k__BackingField: 1
+  <MusicVol>k__BackingField: 0.65162563
+  <SFXVol>k__BackingField: 0.3529181
   <LobbyMusic>k__BackingField: {fileID: 0}
   <GameplayMusic>k__BackingField: {fileID: 0}
   <AccelerationSounds>k__BackingField: []
