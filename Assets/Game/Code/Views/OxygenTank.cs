@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using DG.Tweening;
 using Managers;
@@ -9,7 +10,7 @@ namespace Game.Code.Views
     public class OxygenTank : MonoBehaviour
     {
         // move the item up and down in a loop using DOTween
-        
+        [SerializeField] private float _respawnRate = 20f;
         [SerializeField] private float _upDownDistance = 0.5f;
         [SerializeField] private float _upDownDuration = 1f;
 
@@ -29,7 +30,14 @@ namespace Game.Code.Views
         private void OnTriggerEnter2D(Collider2D other)
         {
             _airManager.AddAir(1f);
+            Respawn().Forget();
             gameObject.SetActive(false);
+        }
+
+        private async UniTaskVoid Respawn()
+        {
+            await UniTask.Delay(TimeSpan.FromSeconds(_respawnRate), cancellationToken: destroyCancellationToken);
+            gameObject.SetActive(true);
         }
     }
 }
