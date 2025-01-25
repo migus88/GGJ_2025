@@ -7,10 +7,17 @@ namespace Managers
         public float DistanceToExit { get; private set; }
         private MazeExitObject _mazeExit;
         private GameObject _player;
-        public DistanceManager(MazeExitObject mazeExit, GameObject player)
+        
+        public DistanceManager(MazeExitObject mazeExit, GameObject player,TimeService _timeService)
         {
             _mazeExit = mazeExit;
             _player = player;
+            _timeService.SecondPassed += HandleSecondPassed;
+        }
+
+        private void HandleSecondPassed()
+        {
+            CalculateDistance();
         }
 
         private void CalculateDistance()
