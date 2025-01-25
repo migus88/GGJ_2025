@@ -17,8 +17,8 @@ MonoBehaviour:
   <Fall>k__BackingField: fall
   <Inflate>k__BackingField: inflation
   <Fly>k__BackingField: partsShake
-  <Jump>k__BackingField: fall
+  <Jump>k__BackingField: 
   <Healthy>k__BackingField: healthFull
   <Hurt>k__BackingField: healthHalf
   <AlmostDead>k__BackingField: healthLow
-  <Death>k__BackingField: idle
+  <Death>k__BackingField: 

@@ -20,7 +20,7 @@ MonoBehaviour:
   <FlightAirUsageRate>k__BackingField: 0.1
   <AirUsageRate>k__BackingField: 0.01
   <MovementSpeed>k__BackingField: 25
-  <JumpForce>k__BackingField: 1
+  <JumpForce>k__BackingField: 10
   <FlyingSpeed>k__BackingField: 20
   <RotationSpeed>k__BackingField: 300
   <RegularGravity>k__BackingField: 1

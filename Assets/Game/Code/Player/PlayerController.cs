@@ -3,7 +3,6 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using Game.Code.Interfaces;
 using ScriptableObjects;
-using Spine.Unity;
 using UnityEngine;
 using VContainer;
 
@@ -64,8 +63,9 @@ namespace Game.Code.Player
                 return;
             }
             
-            if(_inputService.ConsumeJumpPress())
+            if(_inputService.ConsumeJumpPress() && _state == PlayerState.Grounded)
             {
+                _animationController.PlayJump();
                 _rigidbody.AddForce(Vector2.up * _gameSettings.JumpForce, ForceMode2D.Impulse);
             }
 
@@ -79,12 +79,17 @@ namespace Game.Code.Player
                 _animationController.PlayWalk(Vector2.right);
                 _rigidbody.AddForce(Vector2.right * _gameSettings.MovementSpeed);
             }
+            else if(_state == PlayerState.Grounded)
+            {
+                _animationController.PlayIdle();
+            }
         }
 
         private void StartFlying()
         {
             _state = PlayerState.Flying;
             _animationController.PlayFly();
+            _animationController.Inflation = 1f;
 
             _rigidbody.sharedMaterial = _gameSettings.FlyingMaterial;
             _rigidbody.linearVelocity *= 0.5f; // Slowing down the inertia
@@ -99,7 +104,6 @@ namespace Game.Code.Player
         private void StopFlying()
         {
             _state = PlayerState.Falling;
-            _animationController.PlayFall();
             
             _rigidbody.sharedMaterial = _gameSettings.MovementMaterial;
             _rigidbody.rotation = 0;
@@ -215,6 +219,7 @@ namespace Game.Code.Player
             switch (_state)
             {
                 case PlayerState.Falling:
+                    _animationController.PlayFall();
                     _rigidbody.gravityScale = _gameSettings.FallingGravity;
                     break;
                 case PlayerState.Flying:
@@ -234,13 +239,9 @@ namespace Game.Code.Player
                 return;
             }
 
-            var isGrounded = _groundChecker.IsTouchingLayers(_gameSettings.GroundLayer);
-
-            if (isGrounded)
-            {
-                _state = PlayerState.Grounded;
-                _animationController.PlayIdle();
-            }
+            _state = _groundChecker.IsTouchingLayers(_gameSettings.GroundLayer)
+                ? PlayerState.Grounded
+                : PlayerState.Falling;
         }
     }
 }
