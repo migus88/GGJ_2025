@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Game.Code.Interfaces;
+using Managers;
 using ScriptableObjects;
 using UnityEngine;
 using VContainer;
@@ -17,6 +18,9 @@ namespace Game.Code.Player
         [SerializeField] private Rigidbody2D _rigidbody;
         [SerializeField] private Transform _rotationPivot;
         [SerializeField] private AnimationController _animationController;
+        [SerializeField] private Transform _spawnPoint;
+        [SerializeField] private GameObject _view;
+        
 
         private PlayerState _state;
         private float _previousHeight;
@@ -26,27 +30,48 @@ namespace Game.Code.Player
         // Initialization
         private IGameSettings _gameSettings;
         private IInputService _inputService;
+        private IAirManager _airManager;
 
         [Inject]
-        public void Construct(IGameSettings gameSettings, IInputService inputService)
+        public void Construct(IGameSettings gameSettings, IInputService inputService, IAirManager airManager)
         {
             _gameSettings = gameSettings;
             _inputService = inputService;
+            _airManager = airManager;
+            _view.SetActive(false);
+            _state = PlayerState.Dead;
             
             _rigidbody.linearDamping = _gameSettings.MovementDrag;
         }
 
+        private void Start()
+        {
+            Spawn().Forget();
+        }
+
         private void Update()
         {
+            if (_state == PlayerState.Dead)
+            {
+                return;
+            }
+            
             UpdateGroundedState();
             HandleGravity();
             HandleFall();
             HandleLanding();
             HandleAcceleration();
+
+            HandleDeath();
         }
 
         private void FixedUpdate()
         {
+            if (_state == PlayerState.Dead)
+            {
+                return;
+            }
+            
             ControlFlight();
             Move();
             
@@ -56,6 +81,41 @@ namespace Game.Code.Player
             {
                 _rigidbody.linearVelocity = _rigidbody.linearVelocity.normalized * _gameSettings.MaxSpeed;
             }
+        }
+
+        private void HandleDeath()
+        {
+            if (_airManager.CurrentAir <= 0)
+            {
+                Die().Forget();
+            }
+        }
+
+        private async UniTaskVoid Die()
+        {
+            _state = PlayerState.Dead;
+            _rigidbody.linearVelocity = Vector2.zero;
+            _rigidbody.position = _spawnPoint.position;
+            _airManager.PauseDeflation();
+            _animationController.PlayDeath();
+            
+            await UniTask.Delay(TimeSpan.FromSeconds(3));
+
+            Spawn().Forget();
+        }
+
+        private async UniTaskVoid Spawn()
+        {
+            _view.SetActive(true);
+            transform.position = _spawnPoint.position;
+            _airManager.AddAir(1f);
+            _fallingDistance = 0;
+            _previousHeight = _rigidbody.position.y;
+            
+            await _animationController.PlaySpawn();
+            
+            _airManager.StartDeflation();
+            _state = PlayerState.Falling;
         }
 
         private void Move()
@@ -111,6 +171,7 @@ namespace Game.Code.Player
             _rigidbody.linearDamping = _gameSettings.FlyingDrag;
             _groundChecker.enabled = false;
             _flightCancellationTokenSource = new();
+            _airManager.AddAir(-_gameSettings.FlightAirUsageRate);
             
             Fly(_flightCancellationTokenSource.Token).Forget();
         }
@@ -213,8 +274,7 @@ namespace Game.Code.Player
             
             if (_fallingDistance >= _gameSettings.MaxFallDistance)
             {
-                Debug.Log("Death");
-                Destroy(gameObject); // TODO: Respawn instad
+                Die().Forget();
                 return;
             }
             

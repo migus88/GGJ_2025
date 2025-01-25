@@ -4,6 +4,7 @@ namespace Game.Code.Player
     {
         Grounded,
         Falling,
-        Flying
+        Flying,
+        Dead
     }
 }

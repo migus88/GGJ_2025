@@ -45,6 +45,22 @@ namespace Game.Code.Player
             
             _skeleton.AnimationState.SetAnimation(2, GetStatusAnimation(), true);
         }
+
+        public async UniTask PlaySpawn()
+        {
+            _skeleton.AnimationState.ClearTrack(0);
+            PlayAnimation(_settings.Spawn, false);
+            // Wait for _skeleton.AnimationState.GetCurrent(0) to finish
+            var anim = _skeleton.AnimationState.GetCurrent(0);
+            
+            if(anim != null)
+            {
+                // await for animation to finish
+                await UniTask.WaitWhile(() => !anim.IsComplete);
+            }
+            
+            Debug.Log("Spawned");
+        }
         
         public void PlayIdle() => PlayAnimation(_settings.Idle, true);
 
