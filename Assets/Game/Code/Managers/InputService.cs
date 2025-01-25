@@ -5,8 +5,16 @@ using VContainer.Unity;
 
 namespace Managers
 {
-    public class InputService : IInputService, ITickable
+    public class InputService : IInputService, ITickable, IPostFixedTickable
     {
+
+        public bool IsLeftPressed => _isLeftPressed;
+        public bool IsRightPressed => _isRightPressed;
+        public bool IsAccelerationPressed => _isAccelerationPressed;
+        public bool IsInflationPressed => _isInflationPressed;
+        public bool IsDeflationPressed => _isDeflationPressed;
+        public bool IsJumpPressed => _isJumpPressed;
+        
         private bool _isLeftPressed;
         private bool _isRightPressed;
         private bool _isJumpPressed;
@@ -30,6 +38,16 @@ namespace Managers
             if (!_isInflationPressed) _isInflationPressed = Input.GetKey(_settings.Inflation);
             if (!_isDeflationPressed) _isDeflationPressed = Input.GetKey(_settings.Deflation);
         }
+        
+        public void PostFixedTick()
+        {
+            ConsumeAccelerationPress();
+            ConsumeDeflationPress();
+            ConsumeInflationPress();
+            ConsumeJumpPress();
+            ConsumeLeftPress();
+            ConsumeRightPress();
+        }
 
         private bool ConsumePress(ref bool isPressed)
         {
@@ -41,7 +59,6 @@ namespace Managers
             isPressed = false;
             return true;
         }
-
         public bool ConsumeLeftPress() => ConsumePress(ref _isLeftPressed);
 
         public bool ConsumeRightPress() => ConsumePress(ref _isRightPressed);

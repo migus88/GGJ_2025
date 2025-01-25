@@ -47,7 +47,7 @@ namespace Managers
         {
             if (CurrentAir > 0f)
             {
-                CurrentAir -= _gameSettings.DeflationSpeed;
+                CurrentAir -= _gameSettings.AirUsageRate;
             }
         }
     }
