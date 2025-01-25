@@ -87,6 +87,7 @@ namespace Game.Code.Player
         private async UniTaskVoid Die(bool isFallDeath)
         {
             _state = PlayerState.Dead;
+            _accelerationEffect.SetActive(false);
             _rigidbody.linearVelocity = Vector2.zero;
             _airManager.PauseDeflation();
             await _animationController.PlayDeath(!isFallDeath);
