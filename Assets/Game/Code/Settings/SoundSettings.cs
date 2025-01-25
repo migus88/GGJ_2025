@@ -13,6 +13,12 @@ namespace ScriptableObjects
         [field: SerializeField]
         public float MaxPitch { get; set; }
 
+        [field: SerializeField]
+        public float MusicVol { get; set; }
+        
+        [field: SerializeField]
+        public float SFXVol { get; set; }
+        
         [field: SerializeField] public AudioClip LobbyMusic { get; set; }
         [field: SerializeField] public AudioClip GameplayMusic { get; set; }
 
