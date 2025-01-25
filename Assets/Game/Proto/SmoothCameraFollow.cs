@@ -16,7 +16,7 @@ namespace Game.Proto
             
             var position = _player.position;
             position.z = _camera.transform.position.z;
-            _camera.transform.position = position;
+            _camera.transform.position = Vector3.Lerp(_camera.transform.position, position, Time.deltaTime * 10f);
         }
     }
 }

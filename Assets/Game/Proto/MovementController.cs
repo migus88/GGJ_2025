@@ -25,6 +25,7 @@ public class MovementController : MonoBehaviour
     private bool _leftPressed;
     private bool _rightPressed;
     private bool _spacePressed;
+    private bool _isJumpPressed;
     private float _fallingDistance;
     private bool _isGrounded;
     private float _previousHeight;
@@ -38,10 +39,20 @@ public class MovementController : MonoBehaviour
     private void Update()
     {
         _isGrounded = IsGrounded();
+
+        if (_isGrounded)
+        {
+            _rigidbody.gravityScale = 1;
+        }
+        else if(!IsFlying)
+        {
+            _rigidbody.gravityScale = 5;
+        }
         
         if(!_leftPressed) _leftPressed = Input.GetKey(_leftKey);
         if(!_rightPressed) _rightPressed = Input.GetKey(_rightKey);
         if(!_spacePressed) _spacePressed = Input.GetKey(KeyCode.Space);
+        if(!_isJumpPressed) _isJumpPressed = Input.GetKeyDown(KeyCode.UpArrow);
         
         if(!_isGrounded && !IsFlying)
         {
@@ -50,9 +61,8 @@ public class MovementController : MonoBehaviour
             _previousHeight = _rigidbody.position.y;
             Debug.Log($"Falling distance: {_fallingDistance}");
         }
-        else
+        else if(_isGrounded)
         {
-            
             if (_fallingDistance >= _maxFall)
             {
                 Debug.Log("Death");
@@ -60,6 +70,11 @@ public class MovementController : MonoBehaviour
                 return;
             }
             
+            _fallingDistance = 0;
+            _previousHeight = _rigidbody.position.y;
+        }
+        else
+        {
             _fallingDistance = 0;
             _previousHeight = _rigidbody.position.y;
         }
@@ -90,12 +105,18 @@ public class MovementController : MonoBehaviour
         }
         else
         {
-            if (_spacePressed && _isGrounded)
+            if (_spacePressed)
             {
                 _spacePressed = false;
                 StartFlying();
                 _rigidbody.AddForce(Vector2.up * _acceleration);
                 return;
+            }
+            
+            if(_isJumpPressed)
+            {
+                _isJumpPressed = false;
+                _rigidbody.AddForce(Vector2.up * _acceleration, ForceMode2D.Impulse);
             }
 
             if (_leftPressed)
@@ -125,11 +146,22 @@ public class MovementController : MonoBehaviour
     private void StartFlying()
     {
         IsFlying = true;
+        _rigidbody.linearVelocity *= 0.5f;
         _rigidbody.gravityScale = 0;
         _rigidbody.linearDamping = 0;
         _flightController.StartFlying();
         _groundCheckCollider.enabled = false;
         FlyAsync().Forget();
+    }
+
+    private void StopFlying()
+    {
+        IsFlying = false;
+        _rigidbody.rotation = 0;
+        _rigidbody.gravityScale = 5;
+        _rigidbody.linearDamping = _drag;
+        _groundCheckCollider.enabled = true;
+        _flightController.StopFlying();
     }
 
     private async UniTaskVoid FlyAsync()
@@ -152,15 +184,5 @@ public class MovementController : MonoBehaviour
                 break;
             }
         }
-    }
-
-    private void StopFlying()
-    {
-        IsFlying = false;
-        _rigidbody.rotation = 0;
-        _rigidbody.gravityScale = 5;
-        _rigidbody.linearDamping = _drag;
-        _groundCheckCollider.enabled = true;
-        _flightController.StopFlying();
     }
 }
