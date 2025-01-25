@@ -12,6 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ececcb07f3970b84dae8aa8e01c4cc1c, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: 
-  <DeflationSpeed>k__BackingField: 0.01
-  <CollisionPenalty>k__BackingField: 0
-  <Speed>k__BackingField: 30
+  <GroundLayer>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 64
+  <MaxFallDistance>k__BackingField: 12
+  <FlightDuration>k__BackingField: 5
+  <FlightAirUsageRate>k__BackingField: 0.1
+  <AirUsageRate>k__BackingField: 0.01
+  <MovementSpeed>k__BackingField: 25
+  <JumpForce>k__BackingField: 1
+  <FlyingSpeed>k__BackingField: 20
+  <RotationSpeed>k__BackingField: 300
+  <RegularGravity>k__BackingField: 1
+  <FlyingGravity>k__BackingField: 0
+  <FallingGravity>k__BackingField: 5
+  <MovementDrag>k__BackingField: 1.3
+  <FlyingDrag>k__BackingField: 0
+  <MovementMaterial>k__BackingField: {fileID: 6200000, guid: 06a879890897d48bbaaeaea751a7f9a9,
+    type: 2}
+  <FlyingMaterial>k__BackingField: {fileID: 6200000, guid: b0c154e5673fc4239a3fb999a43b40de,
+    type: 2}

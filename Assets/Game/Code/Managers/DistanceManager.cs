@@ -1,4 +1,5 @@
 using System;
+using Game.Code.Player;
 using UnityEngine;
 using VContainer.Unity;
 
@@ -8,11 +9,11 @@ namespace Managers
     {
         public float DistanceToExit { get; private set; }
         
-        private readonly Exit _exit;
-        private readonly GameObject _player;
+        private readonly IExit _exit;
+        private readonly PlayerController _player;
         private readonly ITimeService _timeService;
 
-        public DistanceManager(Exit exit, GameObject player, ITimeService timeService)
+        public DistanceManager(IExit exit, PlayerController player, ITimeService timeService)
         {
             _exit = exit;
             _player = player;

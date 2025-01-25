@@ -1,4 +1,5 @@
 using Game.Code.Interfaces;
+using Game.Code.Player;
 using Managers;
 using ScriptableObjects;
 using UnityEngine;
@@ -12,7 +13,9 @@ namespace Game.Code
         [SerializeField] private GameSettings _gameSettings;
         [SerializeField] private ControlsSettings _controlsSettings;
         [SerializeField] private SoundSettings _soundSettings;
+        [SerializeField] private AnimationSettings _animationSettings;
 
+        [SerializeField] private PlayerController _playerController;
         [SerializeField] private SoundManager _soundManager;
         [SerializeField] private Exit _exit;
         
@@ -21,9 +24,10 @@ namespace Game.Code
             builder.RegisterInstance<IGameSettings>(_gameSettings);
             builder.RegisterInstance<IControlsSettings>(_controlsSettings);
             builder.RegisterInstance<ISoundSettings>(_soundSettings);
-            
-            builder.RegisterComponent<IExit>(_exit);
-            builder.RegisterComponent<ISoundManager>(_soundManager);
+            builder.RegisterInstance<IAnimationSettings>(_animationSettings);
+            builder.RegisterInstance<IExit>(_exit);
+            builder.RegisterInstance<ISoundManager>(_soundManager);
+            builder.RegisterInstance(_playerController);
 
             builder.Register<IAirManager, AirManager>(Lifetime.Singleton);
             

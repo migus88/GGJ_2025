@@ -9,8 +9,10 @@ using VContainer;
 
 namespace Game.Code.Player
 {
-    public class PlayerMovementController : MonoBehaviour
+    public class PlayerController : MonoBehaviour, IPositionProvider
     {
+        public Vector3 Position => transform.position;
+        
         [SerializeField] private Collider2D _groundChecker;
         [SerializeField] private GameObject _accelerationEffect;
         [SerializeField] private Rigidbody2D _rigidbody;
@@ -24,15 +26,12 @@ namespace Game.Code.Player
 
         // Initialization
         private IGameSettings _gameSettings;
-        private IControlsSettings _controlsSettings;
         private IInputService _inputService;
 
         [Inject]
-        public void Construct(IGameSettings gameSettings, IControlsSettings controlsSettings,
-            IInputService inputService)
+        public void Construct(IGameSettings gameSettings, IInputService inputService)
         {
             _gameSettings = gameSettings;
-            _controlsSettings = controlsSettings;
             _inputService = inputService;
         }
 
@@ -72,10 +71,12 @@ namespace Game.Code.Player
 
             if (_inputService.ConsumeLeftPress())
             {
+                _animationController.PlayWalk(Vector2.left);
                 _rigidbody.AddForce(Vector2.left * _gameSettings.MovementSpeed);
             }
             else if (_inputService.ConsumeRightPress())
             {
+                _animationController.PlayWalk(Vector2.right);
                 _rigidbody.AddForce(Vector2.right * _gameSettings.MovementSpeed);
             }
         }
@@ -83,6 +84,7 @@ namespace Game.Code.Player
         private void StartFlying()
         {
             _state = PlayerState.Flying;
+            _animationController.PlayFly();
 
             _rigidbody.sharedMaterial = _gameSettings.FlyingMaterial;
             _rigidbody.linearVelocity *= 0.5f; // Slowing down the inertia
@@ -97,6 +99,7 @@ namespace Game.Code.Player
         private void StopFlying()
         {
             _state = PlayerState.Falling;
+            _animationController.PlayFall();
             
             _rigidbody.sharedMaterial = _gameSettings.MovementMaterial;
             _rigidbody.rotation = 0;
@@ -236,6 +239,7 @@ namespace Game.Code.Player
             if (isGrounded)
             {
                 _state = PlayerState.Grounded;
+                _animationController.PlayIdle();
             }
         }
     }

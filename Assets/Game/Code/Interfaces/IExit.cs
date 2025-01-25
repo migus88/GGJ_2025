@@ -1,6 +1,6 @@
+using Game.Code.Interfaces;
 using UnityEngine;
 
-public interface IExit
+public interface IExit : IPositionProvider
 {
-    Vector3 Position { get; }
 }
