@@ -49,5 +49,11 @@ namespace Managers
             Deflation = 4,
             Inflation = 5
         }
+
+        public void SetVolume(float musicSliderValue, float sfxSliderValue)
+        {
+            _audioSource.volume = musicSliderValue;
+            _effectsAudioSource.volume = sfxSliderValue;
+        }
     }
 }
