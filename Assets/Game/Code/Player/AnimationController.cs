@@ -48,9 +48,9 @@ namespace Game.Code.Player
 
         public async UniTask PlaySpawn()
         {
-            _skeleton.AnimationState.ClearTrack(0);
+            await UniTask.Yield();
             PlayAnimation(_settings.Spawn, false);
-            // Wait for _skeleton.AnimationState.GetCurrent(0) to finish
+            
             var anim = _skeleton.AnimationState.GetCurrent(0);
             
             if(anim != null)
@@ -60,6 +60,8 @@ namespace Game.Code.Player
             }
             
             Debug.Log("Spawned");
+            
+            PlayIdle();
         }
         
         public void PlayIdle() => PlayAnimation(_settings.Idle, true);
@@ -69,14 +71,34 @@ namespace Game.Code.Player
             PlayAnimation(_settings.Fall, true);
             _skeleton.AnimationState.ClearTrack(1);
         }
-        public void PlayDeath() => PlayAnimation(_settings.Death, false);
+
+        public async UniTask PlayDeath()
+        {
+            await UniTask.Yield();
+            PlayAnimation(_settings.Death, false);
+            
+            var anim = _skeleton.AnimationState.GetCurrent(0);
+            
+            if(anim != null)
+            {
+                // await for animation to finish
+                await UniTask.WaitWhile(() => !anim.IsComplete);
+            }
+            
+            Debug.Log("Died");
+        }
 
         public void PlayFly()
         {
             PlayAnimation(_settings.Fly, true);
             _skeleton.AnimationState.SetAnimation(1, _settings.Inflate, false);
         }
-        public void PlayJump() => PlayAnimation(_settings.Jump, false);
+
+        public void PlayJump()
+        {
+            PlayAnimation(_settings.Jump, false);
+            _skeleton.AnimationState.AddAnimation(0, _settings.Fall, true, _skeleton.AnimationState.GetCurrent(0).Animation.Duration);
+        }
 
         public void PlayWalk(Vector2 direction)
         {
@@ -103,7 +125,7 @@ namespace Game.Code.Player
             }
             
             _currentAnimation = animationName;
-            
+
             _skeleton.AnimationState.SetAnimation(0, animationName, isLooped);
         }
 

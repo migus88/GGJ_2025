@@ -12906,6 +12906,11 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 2530798083544036114, guid: 387d864fc2da74a5c9bafeedac4dc58e,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: f5d9f604e89d44bc58e00a40d24d938a, type: 2}
     - target: {fileID: 3469704220417579076, guid: 387d864fc2da74a5c9bafeedac4dc58e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -12966,6 +12971,17 @@ PrefabInstance:
       propertyPath: _spawnPoint
       value: 
       objectReference: {fileID: 1115979794}
+    - target: {fileID: 4210178236663910029, guid: 387d864fc2da74a5c9bafeedac4dc58e,
+        type: 3}
+      propertyPath: _animationName
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4210178236663910029, guid: 387d864fc2da74a5c9bafeedac4dc58e,
+        type: 3}
+      propertyPath: skeletonDataAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8e5e11ea544e9451f87879a0e535b0b9,
+        type: 2}
     - target: {fileID: 7357044567203919101, guid: 387d864fc2da74a5c9bafeedac4dc58e,
         type: 3}
       propertyPath: m_Name

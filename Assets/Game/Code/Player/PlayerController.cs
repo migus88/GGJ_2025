@@ -38,15 +38,8 @@ namespace Game.Code.Player
             _gameSettings = gameSettings;
             _inputService = inputService;
             _airManager = airManager;
-            _view.SetActive(false);
-            _state = PlayerState.Dead;
             
             _rigidbody.linearDamping = _gameSettings.MovementDrag;
-        }
-
-        private void Start()
-        {
-            Spawn().Forget();
         }
 
         private void Update()
@@ -95,11 +88,10 @@ namespace Game.Code.Player
         {
             _state = PlayerState.Dead;
             _rigidbody.linearVelocity = Vector2.zero;
-            _rigidbody.position = _spawnPoint.position;
             _airManager.PauseDeflation();
-            _animationController.PlayDeath();
+            await _animationController.PlayDeath();
             
-            await UniTask.Delay(TimeSpan.FromSeconds(3));
+            _rigidbody.position = _spawnPoint.position;
 
             Spawn().Forget();
         }
@@ -107,12 +99,16 @@ namespace Game.Code.Player
         private async UniTaskVoid Spawn()
         {
             _view.SetActive(true);
+
+            await UniTask.Yield();
+            
             transform.position = _spawnPoint.position;
             _airManager.AddAir(1f);
             _fallingDistance = 0;
             _previousHeight = _rigidbody.position.y;
             
             await _animationController.PlaySpawn();
+            await UniTask.Delay(TimeSpan.FromSeconds(2));
             
             _airManager.StartDeflation();
             _state = PlayerState.Falling;

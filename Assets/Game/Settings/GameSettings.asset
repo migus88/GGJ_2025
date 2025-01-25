@@ -19,16 +19,16 @@ MonoBehaviour:
   <FlightDuration>k__BackingField: 5
   <FlightAirUsageRate>k__BackingField: 0.1
   <AirUsageRate>k__BackingField: 0.01
-  <MaxSpeed>k__BackingField: 20
+  <MaxSpeed>k__BackingField: 30
   <MovementSpeed>k__BackingField: 15
-  <JumpForce>k__BackingField: 10
+  <JumpForce>k__BackingField: 15
   <FlyingSpeed>k__BackingField: 10
   <RotationSpeed>k__BackingField: 300
   <RegularGravity>k__BackingField: 1
   <FlyingGravity>k__BackingField: 0
   <FallingGravity>k__BackingField: 5
-  <MovementDrag>k__BackingField: 1.3
-  <FlyingDrag>k__BackingField: 0
+  <MovementDrag>k__BackingField: 2
+  <FlyingDrag>k__BackingField: 1
   <MovementMaterial>k__BackingField: {fileID: 6200000, guid: 06a879890897d48bbaaeaea751a7f9a9,
     type: 2}
   <FlyingMaterial>k__BackingField: {fileID: 6200000, guid: b0c154e5673fc4239a3fb999a43b40de,
