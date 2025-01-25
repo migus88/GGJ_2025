@@ -9,7 +9,7 @@ namespace ScriptableObjects
         [Range(0f, 2f)] 
         [field:SerializeField] public float Pitch;
 
-        [Inject] 
+        //[Inject] 
         public AudioSource AudioSource;
         
         [field: InspectorName("Sounds")]
