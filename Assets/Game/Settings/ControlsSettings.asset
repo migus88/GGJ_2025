@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6d31c5ef651c3a4588648ea65c554dc, type: 3}
+  m_Name: ControlsSettings
+  m_EditorClassIdentifier: 
+  <Left>k__BackingField: 276
+  <Right>k__BackingField: 275
+  <Acceleration>k__BackingField: 32
+  <Inflation>k__BackingField: 32
+  <Deflation>k__BackingField: 274
+  <Jump>k__BackingField: 273
