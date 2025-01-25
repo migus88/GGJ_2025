@@ -1,3 +1,4 @@
+using Game.Code.Interfaces;
 using Managers;
 using ScriptableObjects;
 using UnityEngine;
@@ -30,6 +31,7 @@ namespace Game.Code
             {
                 c.Add<DistanceManager>().As<IDistanceManager>();
                 c.Add<TimeService>().As<ITimeService>();
+                c.Add<InputService>().As<IInputService>();
             });
         }
     }
