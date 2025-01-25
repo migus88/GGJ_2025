@@ -2,8 +2,8 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Game.Code.Interfaces;
+using Managers;
 using ScriptableObjects;
-using Spine.Unity;
 using UnityEngine;
 using VContainer;
 
@@ -18,6 +18,9 @@ namespace Game.Code.Player
         [SerializeField] private Rigidbody2D _rigidbody;
         [SerializeField] private Transform _rotationPivot;
         [SerializeField] private AnimationController _animationController;
+        [SerializeField] private Transform _spawnPoint;
+        [SerializeField] private GameObject _view;
+        
 
         private PlayerState _state;
         private float _previousHeight;
@@ -27,27 +30,89 @@ namespace Game.Code.Player
         // Initialization
         private IGameSettings _gameSettings;
         private IInputService _inputService;
+        private IAirManager _airManager;
 
         [Inject]
-        public void Construct(IGameSettings gameSettings, IInputService inputService)
+        public void Construct(IGameSettings gameSettings, IInputService inputService, IAirManager airManager)
         {
             _gameSettings = gameSettings;
             _inputService = inputService;
+            _airManager = airManager;
+            
+            _rigidbody.linearDamping = _gameSettings.MovementDrag;
         }
 
         private void Update()
         {
+            if (_state == PlayerState.Dead)
+            {
+                return;
+            }
+            
             UpdateGroundedState();
             HandleGravity();
             HandleFall();
             HandleLanding();
             HandleAcceleration();
+
+            HandleDeath();
         }
 
         private void FixedUpdate()
         {
+            if (_state == PlayerState.Dead)
+            {
+                return;
+            }
+            
             ControlFlight();
             Move();
+            
+            
+            // Clamp the velocity to the maximum speed
+            if (_rigidbody.linearVelocity.magnitude > _gameSettings.MaxSpeed)
+            {
+                _rigidbody.linearVelocity = _rigidbody.linearVelocity.normalized * _gameSettings.MaxSpeed;
+            }
+        }
+
+        private void HandleDeath()
+        {
+            if (_airManager.CurrentAir <= 0)
+            {
+                Die(false).Forget();
+            }
+        }
+
+        private async UniTaskVoid Die(bool isFallDeath)
+        {
+            _state = PlayerState.Dead;
+            _accelerationEffect.SetActive(false);
+            _rigidbody.linearVelocity = Vector2.zero;
+            _airManager.PauseDeflation();
+            await _animationController.PlayDeath(!isFallDeath);
+            await UniTask.Delay(TimeSpan.FromSeconds(2));
+            
+            _rigidbody.position = _spawnPoint.position;
+
+            Spawn().Forget();
+        }
+
+        private async UniTaskVoid Spawn()
+        {
+            _view.SetActive(true);
+
+            await UniTask.Yield();
+            
+            transform.position = _spawnPoint.position;
+            _airManager.AddAir(1f);
+            _fallingDistance = 0;
+            _previousHeight = _rigidbody.position.y;
+            
+            await _animationController.PlaySpawn();
+            
+            _airManager.StartDeflation();
+            _state = PlayerState.Falling;
         }
 
         private void Move()
@@ -60,24 +125,34 @@ namespace Game.Code.Player
             if (_inputService.ConsumeInflationPress())
             {
                 StartFlying();
-                _rigidbody.AddForce(Vector2.up * _gameSettings.FlyingSpeed);
                 return;
             }
             
-            if(_inputService.ConsumeJumpPress())
+            if(_inputService.ConsumeJumpPress() && _state == PlayerState.Grounded)
             {
+                _animationController.PlayJump();
                 _rigidbody.AddForce(Vector2.up * _gameSettings.JumpForce, ForceMode2D.Impulse);
             }
 
             if (_inputService.ConsumeLeftPress())
             {
-                _animationController.PlayWalk(Vector2.left);
+                if(_state == PlayerState.Grounded)
+                {
+                    _animationController.PlayWalk(Vector2.left);
+                }
                 _rigidbody.AddForce(Vector2.left * _gameSettings.MovementSpeed);
             }
             else if (_inputService.ConsumeRightPress())
             {
-                _animationController.PlayWalk(Vector2.right);
+                if(_state == PlayerState.Grounded)
+                {
+                    _animationController.PlayWalk(Vector2.right);
+                }
                 _rigidbody.AddForce(Vector2.right * _gameSettings.MovementSpeed);
+            }
+            else if(_state == PlayerState.Grounded)
+            {
+                _animationController.PlayIdle();
             }
         }
 
@@ -85,6 +160,7 @@ namespace Game.Code.Player
         {
             _state = PlayerState.Flying;
             _animationController.PlayFly();
+            _animationController.Inflation = 1f;
 
             _rigidbody.sharedMaterial = _gameSettings.FlyingMaterial;
             _rigidbody.linearVelocity *= 0.5f; // Slowing down the inertia
@@ -92,6 +168,7 @@ namespace Game.Code.Player
             _rigidbody.linearDamping = _gameSettings.FlyingDrag;
             _groundChecker.enabled = false;
             _flightCancellationTokenSource = new();
+            _airManager.AddAir(-_gameSettings.FlightAirUsageRate);
             
             Fly(_flightCancellationTokenSource.Token).Forget();
         }
@@ -99,7 +176,6 @@ namespace Game.Code.Player
         private void StopFlying()
         {
             _state = PlayerState.Falling;
-            _animationController.PlayFall();
             
             _rigidbody.sharedMaterial = _gameSettings.MovementMaterial;
             _rigidbody.rotation = 0;
@@ -182,6 +258,12 @@ namespace Game.Code.Player
 
         private void HandleLanding()
         {
+            if (_state == PlayerState.Flying)
+            {
+                _fallingDistance = 0;
+                _previousHeight = _rigidbody.position.y;
+            }
+            
             if (_state != PlayerState.Grounded)
             {
                 return;
@@ -189,8 +271,7 @@ namespace Game.Code.Player
             
             if (_fallingDistance >= _gameSettings.MaxFallDistance)
             {
-                Debug.Log("Death");
-                Destroy(gameObject); // TODO: Respawn instad
+                Die(true).Forget();
                 return;
             }
             
@@ -215,6 +296,7 @@ namespace Game.Code.Player
             switch (_state)
             {
                 case PlayerState.Falling:
+                    _animationController.PlayFall();
                     _rigidbody.gravityScale = _gameSettings.FallingGravity;
                     break;
                 case PlayerState.Flying:
@@ -234,13 +316,9 @@ namespace Game.Code.Player
                 return;
             }
 
-            var isGrounded = _groundChecker.IsTouchingLayers(_gameSettings.GroundLayer);
-
-            if (isGrounded)
-            {
-                _state = PlayerState.Grounded;
-                _animationController.PlayIdle();
-            }
+            _state = _groundChecker.IsTouchingLayers(_gameSettings.GroundLayer)
+                ? PlayerState.Grounded
+                : PlayerState.Falling;
         }
     }
 }

@@ -10,6 +10,7 @@ namespace ScriptableObjects
         [field: SerializeField] public float FlightDuration { get; set; }
         [field: SerializeField] public float FlightAirUsageRate { get; set; }
         [field: SerializeField] public float AirUsageRate { get; set; }
+        [field: SerializeField] public float MaxSpeed { get; set; }
         [field: SerializeField] public float MovementSpeed { get; set; }
         [field: SerializeField] public float JumpForce { get; set; }
         [field: SerializeField] public float FlyingSpeed { get; set; }

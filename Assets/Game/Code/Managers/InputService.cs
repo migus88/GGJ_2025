@@ -33,10 +33,10 @@ namespace Managers
         {
             if (!_isLeftPressed) _isLeftPressed = Input.GetKey(_settings.Left);
             if (!_isRightPressed) _isRightPressed = Input.GetKey(_settings.Right);
-            if (!_isJumpPressed) _isJumpPressed = Input.GetKey(_settings.Jump);
+            if (!_isJumpPressed) _isJumpPressed = Input.GetKeyDown(_settings.Jump);
             if (!_isAccelerationPressed) _isAccelerationPressed = Input.GetKey(_settings.Acceleration);
-            if (!_isInflationPressed) _isInflationPressed = Input.GetKey(_settings.Inflation);
-            if (!_isDeflationPressed) _isDeflationPressed = Input.GetKey(_settings.Deflation);
+            if (!_isInflationPressed) _isInflationPressed = Input.GetKeyDown(_settings.Inflation);
+            if (!_isDeflationPressed) _isDeflationPressed = Input.GetKeyDown(_settings.Deflation);
         }
         
         public void PostFixedTick()
