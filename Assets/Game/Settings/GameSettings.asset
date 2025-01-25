@@ -22,7 +22,7 @@ MonoBehaviour:
   <MaxSpeed>k__BackingField: 20
   <MovementSpeed>k__BackingField: 15
   <JumpForce>k__BackingField: 10
-  <FlyingSpeed>k__BackingField: 5
+  <FlyingSpeed>k__BackingField: 10
   <RotationSpeed>k__BackingField: 300
   <RegularGravity>k__BackingField: 1
   <FlyingGravity>k__BackingField: 0
