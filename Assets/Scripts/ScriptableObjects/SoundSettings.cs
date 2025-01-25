@@ -1,5 +1,4 @@
 using UnityEngine;
-using VContainer;
 
 namespace ScriptableObjects
 {
@@ -8,9 +7,6 @@ namespace ScriptableObjects
     {
         [Range(0f, 2f)] 
         [field:SerializeField] public float Pitch;
-
-        [Inject] 
-        public AudioSource AudioSource;
         
         [field: InspectorName("Sounds")]
         [field:SerializeField] public AudioClip LobbyMusic
