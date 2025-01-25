@@ -61,7 +61,7 @@ public class MovementController : MonoBehaviour
             _previousHeight = _rigidbody.position.y;
             Debug.Log($"Falling distance: {_fallingDistance}");
         }
-        else
+        else if(_isGrounded)
         {
             if (_fallingDistance >= _maxFall)
             {
@@ -70,6 +70,11 @@ public class MovementController : MonoBehaviour
                 return;
             }
             
+            _fallingDistance = 0;
+            _previousHeight = _rigidbody.position.y;
+        }
+        else
+        {
             _fallingDistance = 0;
             _previousHeight = _rigidbody.position.y;
         }
@@ -100,7 +105,7 @@ public class MovementController : MonoBehaviour
         }
         else
         {
-            if (_spacePressed && _isGrounded)
+            if (_spacePressed)
             {
                 _spacePressed = false;
                 StartFlying();
