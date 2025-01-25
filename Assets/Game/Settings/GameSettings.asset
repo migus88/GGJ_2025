@@ -18,11 +18,11 @@ MonoBehaviour:
   <MaxFallDistance>k__BackingField: 12
   <FlightDuration>k__BackingField: 5
   <FlightAirUsageRate>k__BackingField: 0.1
-  <AirUsageRate>k__BackingField: 0.1
-  <MaxSpeed>k__BackingField: 50
+  <AirUsageRate>k__BackingField: 0.01
+  <MaxSpeed>k__BackingField: 20
   <MovementSpeed>k__BackingField: 15
   <JumpForce>k__BackingField: 10
-  <FlyingSpeed>k__BackingField: 10
+  <FlyingSpeed>k__BackingField: 5
   <RotationSpeed>k__BackingField: 300
   <RegularGravity>k__BackingField: 1
   <FlyingGravity>k__BackingField: 0
