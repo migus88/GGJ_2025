@@ -16,6 +16,7 @@ namespace ScriptableObjects
         [field: SerializeField] public string Hurt { get; set; }
         [field: SerializeField] public string AlmostDead { get; set; }
         [field: SerializeField] public string Death { get; set; }
+        [field: SerializeField] public string MidAirDeath { get; set; }
         [field: SerializeField] public string Spawn { get; set; }
     }
 }

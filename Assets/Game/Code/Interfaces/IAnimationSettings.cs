@@ -12,6 +12,7 @@ namespace Game.Code.Interfaces
         string Hurt { get; }
         string AlmostDead { get; }
         string Death { get; }
+        string MidAirDeath { get; }
         string Spawn { get; }
     }
 }

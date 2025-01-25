@@ -22,4 +22,5 @@ MonoBehaviour:
   <Hurt>k__BackingField: healthHalf
   <AlmostDead>k__BackingField: healthLow
   <Death>k__BackingField: deathFall
+  <MidAirDeath>k__BackingField: deathFall2
   <Spawn>k__BackingField: resurection

@@ -80,16 +80,17 @@ namespace Game.Code.Player
         {
             if (_airManager.CurrentAir <= 0)
             {
-                Die().Forget();
+                Die(false).Forget();
             }
         }
 
-        private async UniTaskVoid Die()
+        private async UniTaskVoid Die(bool isFallDeath)
         {
             _state = PlayerState.Dead;
             _rigidbody.linearVelocity = Vector2.zero;
             _airManager.PauseDeflation();
-            await _animationController.PlayDeath();
+            await _animationController.PlayDeath(!isFallDeath);
+            await UniTask.Delay(TimeSpan.FromSeconds(2));
             
             _rigidbody.position = _spawnPoint.position;
 
@@ -108,7 +109,6 @@ namespace Game.Code.Player
             _previousHeight = _rigidbody.position.y;
             
             await _animationController.PlaySpawn();
-            await UniTask.Delay(TimeSpan.FromSeconds(2));
             
             _airManager.StartDeflation();
             _state = PlayerState.Falling;
@@ -270,7 +270,7 @@ namespace Game.Code.Player
             
             if (_fallingDistance >= _gameSettings.MaxFallDistance)
             {
-                Die().Forget();
+                Die(true).Forget();
                 return;
             }
             

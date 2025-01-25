@@ -72,10 +72,13 @@ namespace Game.Code.Player
             _skeleton.AnimationState.ClearTrack(1);
         }
 
-        public async UniTask PlayDeath()
+        public async UniTask PlayDeath(bool isMidAir)
         {
+            _skeleton.AnimationState.ClearTrack(0);
+            _skeleton.AnimationState.ClearTrack(1);
+            
             await UniTask.Yield();
-            PlayAnimation(_settings.Death, false);
+            PlayAnimation(isMidAir ? _settings.MidAirDeath : _settings.Death, false);
             
             var anim = _skeleton.AnimationState.GetCurrent(0);
             
