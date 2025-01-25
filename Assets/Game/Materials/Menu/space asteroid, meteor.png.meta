@@ -173,7 +173,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      space asteroid, meteor_0: -4833224468862201104
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

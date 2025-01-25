@@ -198,7 +198,9 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Raspik_0: -8991964941511247036
+      Raspik_1: -4186922201006665864
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
