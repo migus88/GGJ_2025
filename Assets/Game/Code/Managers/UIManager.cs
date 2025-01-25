@@ -11,12 +11,12 @@ public class UIManager : MonoBehaviour, IUIManager
     [SerializeField] private TextMeshProUGUI _airAmountTxt;
     [SerializeField] private TextMeshProUGUI _timeCounterTxt;
 
-    private TimeService _timeService;
-    private DistanceManager _distanceManager;
-    private AirManager _airManager;
-    
+    private ITimeService _timeService;
+    private IDistanceManager _distanceManager;
+    private IAirManager _airManager;
+
     [Inject]
-    public void Construct(DistanceManager distanceManager, AirManager airManager, TimeService timeService)
+    public void Construct(IDistanceManager distanceManager, IAirManager airManager, ITimeService timeService)
     {
         _distanceManager = distanceManager;
         _airManager = airManager;
@@ -24,29 +24,37 @@ public class UIManager : MonoBehaviour, IUIManager
         
         _timeService.SecondPassed += HandleSecondPassed;
     }
-    public void OnEnable()
-    {
-        
-    }
 
     private void HandleSecondPassed()
     {
         SetDistance();
+        SetAir();
+        SetTime();
     }
 
     private void SetDistance()
     {
-        _distanceTxt.text = $"{_distanceManager.DistanceToExit:F1}m";
+        if (_distanceTxt)
+            _distanceTxt.text = $"{_distanceManager.DistanceToExit:F1}m";
     }
 
     private void SetAir()
     {
-        _airAmountTxt.text = $"{_airManager.CurrentAir}%";
+        if (_airAmountTxt)
+            _airAmountTxt.text = $"Air: {(_airManager.CurrentAir):P}";
     }
 
     private void SetTime()
     {
-        TimeSpan timeSpan = TimeSpan.FromSeconds(_timeService.SecondsPassed);
-        _timeCounterTxt.text = $"{timeSpan.Minutes}:{timeSpan.Seconds}{timeSpan.Milliseconds}";
+        if (_timeCounterTxt)
+        {
+            var timeSpan = TimeSpan.FromSeconds(_timeService.SecondsPassed);
+            _timeCounterTxt.text = $"{timeSpan.Minutes}:{timeSpan.Seconds}{timeSpan.Milliseconds}";
+        }
+    }
+
+    private void OnDestroy()
+    {
+        _timeService.SecondPassed -= HandleSecondPassed;
     }
 }

@@ -74,6 +74,7 @@ namespace Game.Code.Player
 
         public async UniTask PlayDeath(bool isMidAir)
         {
+            Inflation = 0f;
             _skeleton.AnimationState.ClearTrack(0);
             _skeleton.AnimationState.ClearTrack(1);
             
