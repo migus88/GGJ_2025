@@ -1,47 +1,46 @@
 using System;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 using UnityEngine.Events;
+using VContainer.Unity;
 
 namespace Managers
 {
-    public class TimeService : ITimeService
+    public class TimeService : ITimeService, ITickable
     {
         public event Action SecondPassed;
         public long SecondsPassed { get; private set; }
-        private bool _isActive;
-        private UniTask _timer;
-        private bool _timerRunning = true;
+        public bool IsActive { get; private set; }
+        
+        private long _previousSecondsPassed;
 
-        public void StartTimer()
+        public void Start()
         {
-            _isActive = true;
-            _timerRunning = true;
+            IsActive = true;
             SecondsPassed = 0;
-            SecondTicker();
+            SecondTicker().Forget();
         }
 
         public void Pause()
         {
-            _timerRunning = false;
-        }
-    
-        public void StopTimer()
-        {
-            _isActive = false;
-            _timerRunning = false;
+            IsActive = false;
         }
 
-        public void RestartTimer()
+        private async UniTaskVoid SecondTicker()
         {
-            StartTimer();
-        }
-
-        public async UniTaskVoid SecondTicker()
-        {
-            while (_timerRunning)
+            var second = TimeSpan.FromSeconds(1);
+            while (Application.exitCancellationToken.IsCancellationRequested == false)
             {
-                await UniTask.Delay(TimeSpan.FromSeconds(1));
+                await UniTask.Delay(second, cancellationToken: Application.exitCancellationToken);
                 SecondsPassed++;
+            }
+        }
+
+        public void Tick()
+        {
+            if (SecondsPassed != _previousSecondsPassed)
+            {
+                _previousSecondsPassed = SecondsPassed;
                 SecondPassed?.Invoke();
             }
         }

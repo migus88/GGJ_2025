@@ -2,13 +2,14 @@ using System;
 using Managers;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using VContainer;
 
 public class UIManager : MonoBehaviour, IUIManager
 {
-    [SerializeField] private TextMeshProUGUI _distanceTXT;
-    [SerializeField] private TextMeshProUGUI _airAmountTXT;
-    [SerializeField] private TextMeshProUGUI _timeCounterTXT;
+    [SerializeField] private TextMeshProUGUI _distanceTxt;
+    [SerializeField] private TextMeshProUGUI _airAmountTxt;
+    [SerializeField] private TextMeshProUGUI _timeCounterTxt;
 
     private TimeService _timeService;
     private DistanceManager _distanceManager;
@@ -36,17 +37,17 @@ public class UIManager : MonoBehaviour, IUIManager
 
     private void SetDistance()
     {
-        _distanceTXT.text = $"{_distanceManager.DistanceToExit:F1}m";
+        _distanceTxt.text = $"{_distanceManager.DistanceToExit:F1}m";
     }
 
     private void SetAir()
     {
-        _airAmountTXT.text = $"{_airManager.CurrentAir}%";
+        _airAmountTxt.text = $"{_airManager.CurrentAir}%";
     }
 
     private void SetTime()
     {
         TimeSpan timeSpan = TimeSpan.FromSeconds(_timeService.SecondsPassed);
-        _timeCounterTXT.text = $"{timeSpan.Minutes}:{timeSpan.Seconds}{timeSpan.Milliseconds}";
+        _timeCounterTxt.text = $"{timeSpan.Minutes}:{timeSpan.Seconds}{timeSpan.Milliseconds}";
     }
 }

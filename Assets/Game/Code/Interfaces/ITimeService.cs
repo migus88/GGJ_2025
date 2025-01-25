@@ -9,9 +9,7 @@ namespace Managers
         event Action SecondPassed;
         long SecondsPassed { get; }
 
-        void StartTimer(); // Starts the timer
-        void Pause(); // Pauses the timer
-        void StopTimer(); // Stops the timer
-        void RestartTimer(); // Restarts the timer
+        void Start();
+        void Pause();
     }
 }

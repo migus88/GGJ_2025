@@ -1,9 +1,10 @@
 using System;
 using UnityEngine;
+using VContainer.Unity;
 
 namespace Managers
 {
-    public class DistanceManager : IDistanceManager, IDisposable
+    public class DistanceManager : IDistanceManager, IStartable, IDisposable
     {
         public float DistanceToExit { get; private set; }
         
@@ -17,6 +18,10 @@ namespace Managers
             _player = player;
             
             _timeService = timeService;
+        }
+
+        public void Start()
+        {
             _timeService.SecondPassed += HandleSecondPassed;
         }
 
