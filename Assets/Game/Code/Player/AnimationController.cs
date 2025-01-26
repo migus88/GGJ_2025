@@ -75,7 +75,13 @@ namespace Game.Code.Player
         public async UniTask PlayDeath(bool isMidAir)
         {
             Inflation = 0f;
-            _skeleton.AnimationState.GetCurrent(1).TrackTime = Inflation * _inflationAnimationDuration;
+            
+            var inflationAnim = _skeleton.AnimationState.GetCurrent(1);
+            
+            if(inflationAnim != null)
+            {
+                inflationAnim.TrackTime = Inflation * _inflationAnimationDuration;
+            }
             
             await UniTask.Yield();
             

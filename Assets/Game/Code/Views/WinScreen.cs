@@ -2,19 +2,29 @@ using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Game.Code.Views
 {
     public class WinScreen : MonoBehaviour
     {
-        private void Start()
+        [SerializeField] private Button _replayButton;
+        
+        private void Awake()
         {
-            RestartGame().Forget();
+            _replayButton.onClick.AddListener(RestartGame);
         }
 
-        private async UniTaskVoid RestartGame()
+        private void Update()
         {
-            await UniTask.Delay(TimeSpan.FromSeconds(10));
+            if(Input.GetKeyDown(KeyCode.Escape))
+            {
+                SceneManager.LoadScene("Menu");
+            }
+        }
+
+        private void RestartGame()
+        {
             SceneManager.LoadScene("GameScene");
         }
     }
