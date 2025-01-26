@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using VContainer;
 
 namespace Managers
@@ -11,6 +12,14 @@ namespace Managers
             timeService.Start();
             airManager.AddAir(1f);
             airManager.StartDeflation();
+        }
+        
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                SceneManager.LoadScene("Menu");
+            }
         }
     }
 }

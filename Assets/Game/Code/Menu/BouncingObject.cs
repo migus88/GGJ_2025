@@ -7,6 +7,6 @@ public class BouncingObject : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        rb.linearVelocity = new Vector2(Random.Range(-180f,180f), Random.Range(-180f,180f));
+        rb.linearVelocity = new Vector2(Random.Range(-50f,50f), Random.Range(-50f,50f));
     }
 }
