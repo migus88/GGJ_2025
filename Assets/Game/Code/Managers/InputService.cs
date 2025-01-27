@@ -12,7 +12,7 @@ namespace Managers
         public bool IsRightPressed => _isRightPressed;
         public bool IsAccelerationPressed => _isAccelerationPressed;
         public bool IsInflationPressed => _isInflationPressed;
-        public bool IsDeflationPressed => _isDeflationPressed;
+        public bool IsInfiniteFlightSelected => _isInfiniteFlightSelected;
         public bool IsJumpPressed => _isJumpPressed;
         
         private bool _isLeftPressed;
@@ -20,9 +20,12 @@ namespace Managers
         private bool _isJumpPressed;
         private bool _isAccelerationPressed;
         private bool _isInflationPressed;
-        private bool _isDeflationPressed;
+        private bool _isInfiniteFlightSelected;
         
         private readonly IControlsSettings _settings;
+        
+        private int _infiniteFlightPressCounter;
+        private float _lastTimeInfiniteFlightPressed;
 
         public InputService(IControlsSettings settings)
         {
@@ -31,18 +34,40 @@ namespace Managers
         
         public void Tick()
         {
+            HandleInfiniteFlightPressReset();
+            
             if (!_isLeftPressed) _isLeftPressed = Input.GetKey(_settings.Left);
             if (!_isRightPressed) _isRightPressed = Input.GetKey(_settings.Right);
             if (!_isJumpPressed) _isJumpPressed = Input.GetKeyDown(_settings.Jump);
             if (!_isAccelerationPressed) _isAccelerationPressed = Input.GetKey(_settings.Acceleration);
             if (!_isInflationPressed) _isInflationPressed = Input.GetKeyDown(_settings.Inflation);
-            if (!_isDeflationPressed) _isDeflationPressed = Input.GetKeyDown(_settings.Deflation);
+            
+            if (!_isInfiniteFlightSelected)
+            {
+                var isPressed = Input.GetKeyDown(_settings.InfiniteFlight);
+                _infiniteFlightPressCounter += isPressed ? 1 : 0;
+            }
+            
+            if(_infiniteFlightPressCounter >= 3)
+            {
+                _isInfiniteFlightSelected = true;
+            }
+        }
+        
+        private void HandleInfiniteFlightPressReset()
+        {
+            if (Time.time - _lastTimeInfiniteFlightPressed > 0.5f)
+            {
+                _infiniteFlightPressCounter = 0;
+            }
+            
+            _lastTimeInfiniteFlightPressed = Time.time;
         }
         
         public void PostFixedTick()
         {
             ConsumeAccelerationPress();
-            ConsumeDeflationPress();
+            ConsumeInfiniteFlightPress();
             ConsumeInflationPress();
             ConsumeJumpPress();
             ConsumeLeftPress();
@@ -67,7 +92,7 @@ namespace Managers
 
         public bool ConsumeInflationPress() => ConsumePress(ref _isInflationPressed);
 
-        public bool ConsumeDeflationPress() => ConsumePress(ref _isDeflationPressed);
+        public bool ConsumeInfiniteFlightPress() => _isInfiniteFlightSelected;
 
         public bool ConsumeJumpPress() => ConsumePress(ref _isJumpPressed);
     }

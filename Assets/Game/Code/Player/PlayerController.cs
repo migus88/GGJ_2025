@@ -232,7 +232,8 @@ namespace Game.Code.Player
                 Accelerate();
             }
 
-            if (_inputService.ConsumeDeflationPress())
+            // Bug turned into a cheat code
+            if (_inputService.ConsumeInfiniteFlightPress())
             {
                 _flightCancellationTokenSource.Cancel();
             }

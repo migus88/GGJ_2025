@@ -8,7 +8,7 @@ namespace ScriptableObjects
         KeyCode Right { get; set; }
         KeyCode Acceleration { get; set; }
         KeyCode Inflation { get; set; }
-        KeyCode Deflation { get; set; }
+        KeyCode InfiniteFlight { get; set; }
         KeyCode Jump { get; set; }
     }
 }

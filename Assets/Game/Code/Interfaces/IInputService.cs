@@ -6,7 +6,7 @@ namespace Game.Code.Interfaces
         bool IsRightPressed { get; }
         bool IsAccelerationPressed { get; }
         bool IsInflationPressed { get; }
-        bool IsDeflationPressed { get; }
+        bool IsInfiniteFlightSelected { get; }
         bool IsJumpPressed { get; }
         
         
@@ -14,7 +14,7 @@ namespace Game.Code.Interfaces
         bool ConsumeRightPress();
         bool ConsumeAccelerationPress();
         bool ConsumeInflationPress();
-        bool ConsumeDeflationPress();
+        bool ConsumeInfiniteFlightPress();
         bool ConsumeJumpPress();
     }
 }
